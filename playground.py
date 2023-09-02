@@ -187,6 +187,8 @@ print()
 # In[ ]:
 
 
+st.write("Let's find your favourite color based on the mood you are in right now... ")
+
 col1, col2 = st.columns([1, 1])
 with col1:
     A, B, C = [colors[key+'_prev'] for key in color_keys]
