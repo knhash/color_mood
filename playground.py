@@ -73,16 +73,16 @@ def clear_session():
 # In[24]:
 
 
-def update_colors(colors, direction='right'):
+def update_colors(colors, direction='Second'):
     global color_keys
 
     # update colors based only on the delta
     for key in color_keys:
         delta = (colors[key] - colors[key+'_prev'])
-        if direction == 'right':
-            colors[key+'_a'] = max(colors[key+'_a']+delta*2, 1)
+        if direction == 'Second':
+            colors[key+'_a'] = max(colors[key+'_a']+delta*5, 1)
         else:
-            colors[key+'_b'] = max(colors[key+'_b']+delta*0.5, 1)
+            colors[key+'_b'] = max(colors[key+'_b']+delta*2.5, 1)
         
     # save current colors into previous colors
     for key in color_keys:
@@ -196,9 +196,9 @@ with col1:
         caption="[{:.2f}, {:.2f}, {:.2f}]".format(A, B, C),
         use_column_width="always",)
     st.button(
-        "LEFT (or left arrow key)",
+        "First",
         on_click=update_colors,
-        args=(colors, 'left',),
+        args=(colors, 'First',),
         use_container_width=True,)
 
 with col2:
@@ -209,10 +209,12 @@ with col2:
         caption="[{:.2f}, {:.2f}, {:.2f}]".format(A, B, C),
         use_column_width="always",)
     st.button(
-        "RIGHT (or right arrow key)",
+        "Second",
         on_click=update_colors,
-        args=(colors, 'right',),
+        args=(colors, 'Second',),
         use_container_width=True,)
+    
+st.caption("Use arrow keys or click button to state which color you 'feel' more for")
 
 with st.sidebar:
     color_key_index = st.radio(
@@ -246,15 +248,15 @@ components.html(
 <script>
 const doc = window.parent.document;
 buttons = Array.from(doc.querySelectorAll('button[kind=secondary]'));
-const left_button = buttons.find(el => el.innerText === 'LEFT (or left arrow key)');
-const right_button = buttons.find(el => el.innerText === 'RIGHT (or right arrow key)');
+const First_button = buttons.find(el => el.innerText === 'First');
+const Second_button = buttons.find(el => el.innerText === 'Second');
 doc.addEventListener('keydown', function(e) {
     switch (e.keyCode) {
-        case 37: // (37 = left arrow)
-            left_button.click();
+        case 37: // (37 = First arrow)
+            First_button.click();
             break;
-        case 39: // (39 = right arrow)
-            right_button.click();
+        case 39: // (39 = Second arrow)
+            Second_button.click();
             break;
     }
 });
