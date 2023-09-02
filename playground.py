@@ -241,6 +241,20 @@ with st.sidebar:
         use_container_width=True,
     )
 
+st.markdown("---")
+
+st.subheader("Hey! Hi.")
+
+st.markdown("I like :rainbow[colors]. I like :rainbow[stats]. So I thought why not combine the two and create something fun. And try to _figure out your favourite color based on stats?_")
+
+st.markdown("This is using [Beta Distribution](https://en.wikipedia.org/wiki/Beta_distribution) to hone in on your favourite color. The more you click on the color you like, the more it should show up. On the sidebar you can choose a different color scheme and reset the algorithm learning. Do you see the colors converging in the graphs?")
+
+st.markdown("[Talk to me](mailto:mail@knhash.in), is there a better way to it [than this](https://github.com/knhash/color_mood)?")
+
+st.markdown("---")
+
+st.markdown("Made with :heart: by [knhash](https://knhash.in)")
+
 
 # In[ ]:
 
