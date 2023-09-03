@@ -51,19 +51,18 @@ def generate_color_image(a, b, c, color_mode, size):
     return image
 
 
-# In[25]:
+# In[6]:
 
+
+colors_df = None
 
 def clear_session():
+    global colors_df
     # Delete all the items in Session state
     for key in st.session_state.keys():
         del st.session_state[key]
-    
-    # Delete the colors.csv file if it exists
-    try:
-        os.remove('colors.csv')
-    except:
-        pass
+    colors_df = None
+
 
 
 # ---
@@ -92,7 +91,7 @@ def update_colors(colors, direction='Second'):
     for key in color_keys:
         colors[key] = np.random.beta(colors[key+'_a'], colors[key+'_b'])
 
-    # check if colors.csv exists
+    # check if df exists exists
     try:
         with open('colors.csv', 'r') as f:
             pass
@@ -106,6 +105,13 @@ def update_colors(colors, direction='Second'):
         w = csv.DictWriter(f, colors.keys())
         w.writerow(colors)
 
+    # convert the colors dict to a dataframe
+    df = pd.DataFrame.from_dict(colors, orient='index').T
+
+    # concat df to colors_df
+    global colors_df
+    colors_df = pd.concat([colors_df, df], ignore_index=True)
+
 
     # save everything in session state
     for key in color_keys:
@@ -113,6 +119,7 @@ def update_colors(colors, direction='Second'):
         st.session_state[key+'_a'] = colors[key+'_a']
         st.session_state[key+'_b'] = colors[key+'_b']
         st.session_state[key+'_prev'] = colors[key+'_prev']
+    st.session_state['colors_df'] = colors_df
     
         
 
@@ -179,6 +186,12 @@ for key in [value for _, vale in color_schemes.items() for value in vale]:
     colors[key+'_a'] = st.session_state[key+'_a']
     colors[key+'_b'] = st.session_state[key+'_b']
 
+if 'colors_df' not in st.session_state:
+    st.session_state['colors_df'] = pd.DataFrame.from_dict(colors, orient='index').T
+else:
+    colors_df = st.session_state['colors_df']
+
+
 for key in color_keys:
     print("{}[a: {:.3f}, b: {:.3f}]".format(key, colors[key+'_a'], colors[key+'_b']), end=' ')
 print()
@@ -230,10 +243,10 @@ with st.sidebar:
     st.session_state['color_mode'] = color_key_index
 
     try:
-        df = pd.read_csv('colors.csv')
+        df = st.session_state['colors_df']
         st.line_chart(df[color_keys])
-    except:
-        pass
+    except Exception as e:
+        print("Couldn't print the chart", e)
 
     st.button(
         "Reset",
