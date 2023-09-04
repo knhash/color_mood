@@ -202,7 +202,7 @@ print()
 
 st.write("Let's find your favourite color based on the mood you are in right now... ")
 
-col1, col2 = st.columns([1, 1])
+col1, col2, col3 = st.columns([2, 1, 2])
 with col1:
     A, B, C = [colors[key+'_prev'] for key in color_keys]
     image = generate_color_image(A, B, C, st.session_state['color_mode'], 1024)
@@ -210,24 +210,27 @@ with col1:
         image, 
         caption="[{:.2f}, {:.2f}, {:.2f}]".format(A, B, C),
         use_column_width="always",)
+
+with col2:
     st.button(
         "First",
         on_click=update_colors,
         args=(colors, 'First',),
         use_container_width=True,)
+    st.button(
+        "Second",
+        on_click=update_colors,
+        args=(colors, 'Second',),
+        use_container_width=True,)
 
-with col2:
+with col3:
     A, B, C = [colors[key] for key in color_keys]
     image = generate_color_image(A, B, C, st.session_state['color_mode'], 1024)
     st.image(
         image, 
         caption="[{:.2f}, {:.2f}, {:.2f}]".format(A, B, C),
         use_column_width="always",)
-    st.button(
-        "Second",
-        on_click=update_colors,
-        args=(colors, 'Second',),
-        use_container_width=True,)
+    
     
 st.caption("Use arrow keys or click button to state which color you 'feel' more for")
 
